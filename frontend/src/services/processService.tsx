@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { Process } from '../../type';
 
-const baseURL = '/api/process';
-
+const baseURL = 'http://localhost:5000/api/process';
 
 
 const getAllProcesses = async (): Promise<Process[]> => {

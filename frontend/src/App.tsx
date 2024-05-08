@@ -15,6 +15,7 @@ const App: React.FC = () => {
   const fetchProcesses = async () => {
     try {
       const processesData = await getAllProcesses();
+      console.log(processesData)
       setProcesses(processesData);
     } catch (error) {
       console.error(error?.message );
@@ -33,7 +34,7 @@ const App: React.FC = () => {
   const handleDeleteProcess = async (pid: number) => {
     try {
       await deleteProcess(pid);
-      setProcesses(processes.filter(process => process.pid !== pid));
+      setProcesses(processes?.filter(process => process.pid !== pid));
     } catch (error) {
       console.error(error.message);
     }
@@ -43,7 +44,7 @@ const App: React.FC = () => {
     <div>
       <h1>Process Management</h1>
       <ProcessForm onCreateProcess={handleCreateProcess} />
-      {/* <ProcessList processes={processes} onDeleteProcess={handleDeleteProcess} /> */}
+      <ProcessList processes={processes} onDeleteProcess={handleDeleteProcess} />
     </div>
   );
 };
