@@ -3,8 +3,6 @@ const router =express.Router();
 const Process =require('../models/process');
 
 
-console.log("okkk--------------->")
-
 router.get("/process", async (req,res, next)=> {
   const resp = await Process({})
   return res.json({
