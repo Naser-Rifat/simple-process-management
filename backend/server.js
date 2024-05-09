@@ -1,32 +1,31 @@
-// backend/server.js
-
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-// const processRoutes = require('./routes/processRoutes');
-const ProcessRoutes = require('./routes/processRoutes')
+const connectDB = require('./utils/db');
+const processRoutes = require('./routes/processRoutes');
+require('./config/dotenv');
+
 const app = express();
 app.use(cors());
-
-// Middleware
 app.use(express.json());
 
-//Connect to mongoDB
-mongoose.connect('mongodb+srv://rifat:654654@cluster0.v5wfpvl.mongodb.net/process_management', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log({err}));
+// Connect to MongoDB
+connectDB();
 
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', () => {
-//   console.log('Connected to MongoDB');
-// });
-app.get("/", (req, res) => {
-  res.json({
-    message:"Ok"
-  })
-})
-app.use('/api', ProcessRoutes);
+// Routes
+app.use('/api', processRoutes);
+
+//404 Handler
+app.use((req, res, next) => {
+  next("Request URL not found!");
+});
+app.use((error, req, res, next) => {
+  console.log(error);
+  if (error) {
+    res.status(500).send({error});
+  } else {
+    res.status(500).send("There was an Error!");
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
